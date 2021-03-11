@@ -9,14 +9,17 @@ import Person from './Person/Person.js';
 
 const App = props => {
   //Retuns two elemenents. The first element you get back is the first state. The second element is a function to update the state. Get/set.
+  //REACT HOOKS OVERWRITE AND DON'T MERGE. Merging only happens with components.
   const [ personsState, setPersonsState ] = useState({
     persons: [
       { name: 'Max', age: 28 },
       { name: 'Manu', age: 29 },
       { name: 'Stephanie', age: 26 }
-    ],
-    otherState: 'Some other data'
+    ]
   });
+
+  const [otherState, setOtherstate] = useState('Some other value');
+  console.log(personsState, otherState);
 
   const switchNameHandler = () => {
   //console.log('Was clicked.');
