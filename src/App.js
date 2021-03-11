@@ -4,8 +4,9 @@ import Person from './Person/Person.js';
 
 //NOTE. You have to use className not class.
 //Onclick is with a capital C.
-
 //State is managed from inside compontent. This must extend component. Be careful with states.
+
+//Stateful. "smart" or containers that contain the state. You only want a COUPLE of these!
 
 const App = props => {
   //Retuns two elemenents. The first element you get back is the first state. The second element is a function to update the state. Get/set.

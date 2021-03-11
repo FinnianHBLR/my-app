@@ -4,7 +4,7 @@ import React from 'react';
 //JS code has to be run with {}. This is NOT JSX, only one line expressions. You could call a function though.
 //{} Means dynamic
 //Children is a reserved word.
-
+//STATELESS, or "dumb". Use as many of these as possible.
 const person = (props) => {
     return (
         <div>
