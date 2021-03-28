@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
+import person from './Person/Person.js';
 import Person from './Person/Person.js';
 
 //NOTE. You have to use className not class.
@@ -46,7 +47,7 @@ class App extends Component {
     //Flip flop
     //This merges into the JSON.
     const doesShow = this.state.showPersons;
-    this.setState({showPersons: !doesShow});
+    this.setState({ showPersons: !doesShow });
   }
 
 
@@ -59,17 +60,11 @@ class App extends Component {
       padding: '8px',
       cursor: 'pointer'
     };
-
-
-    return (
-      <div className="App">
-        <h1>Hi, I'm React</h1>
-        <p>This is really working.</p>
-        <button
-          style={style}
-          onClick={this.togglePersonsHandler}>Switch Name</button>
-        {
-        this.state.showPersons == true ?
+    //Default
+    let persons = null;
+    //This checks every time there is a re-render.
+    if (this.state.showPersons) {
+      persons = (
         <div>
           <Person
             name={this.state.persons[0].name}
@@ -84,11 +79,20 @@ class App extends Component {
           <Person
             name={this.state.persons[2].name}
             age={this.state.persons[2].age}
-          /> 
+          />
 
-        </div>:  null
-        }
+        </div>
+      );
+    }
 
+    return (
+      <div className="App">
+        <h1>Hi, I'm React</h1>
+        <p>This is really working.</p>
+        <button
+          style={style}
+          onClick={this.togglePersonsHandler}>Toggle Names</button>
+        {persons}
       </div>
     );
 
