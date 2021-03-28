@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import './App.css';
-import person from './Person/Person.js';
 import Person from './Person/Person.js';
 
 //NOTE. You have to use className not class.
@@ -9,37 +8,44 @@ class App extends Component {
   //State is managed from inside compontent. This must extend component. Be careful with states.
   state = {
     persons: [
-      { name: 'Max', age: 28 },
-      { name: 'Manu', age: 29 },
-      { name: 'Stephanie', age: 26 }
+      { id: '1', name: 'Max', age: 28 },
+      { id: '2', name: 'Manu', age: 29 },
+      { id: '3', name: 'Stephanie', age: 26 }
     ],
     otherState: 'Some other data',
     showPersons: false
   };
 
-  switchNameHandler = (newName) => {
-    //console.log('Was clicked.');
-    //DONT DO THIS: this.state.persons[0].name = "MaxiBoy";
-    this.setState({
-      persons: [
-        { name: newName, age: 28 },
-        { name: 'Manu', age: 29 },
-        { name: 'Stephanie', age: 27 }
-      ]
-    })
+  deletePersonHandler = (personIndex) => {
+    //Get all persons
+    //You MUST use slice() or spread to copy the old array to the const. This avoids directly editing the state.
+    //const persons = this.state.persons.slice();
+    const persons = [...this.state.persons];
+    //Removing the one element 
+    persons.splice(personIndex, 1);
+    //Using this to set the state.
+    this.setState({persons: persons});
   }
 
   //Always use => for handlers as this can refrence something else. 
-  nameChangedHandler = (event) => {
+  nameChangedHandler = (event, id) => {
     //console.log('Was clicked.');
     //DONT DO THIS: this.state.persons[0].name = "MaxiBoy";
-    this.setState({
-      persons: [
-        { name: 'Max', age: 28 },
-        { name: event.target.value, age: 29 },
-        { name: 'Stephanie', age: 27 }
-      ]
-    })
+    const personIndex = this.state.persons.findIndex(p => {
+      return p.id === id;
+    });
+
+    //Distribute all properties from object into this const. SO YOU DO NOT MUTATE the state
+    const person = {
+      ...this.state.persons[personIndex]
+    };
+    person.name = event.target.value;
+    //OLD: const person = Object.assign({}, this.state.persons[personIndex]);
+
+    const persons = [...this.state.persons];
+    persons[personIndex] = person;
+
+    this.setState({persons: persons});
   }
 
   //You have to assign ana arrow function to this property so it can be called. This means "this" is always this class.
@@ -63,24 +69,21 @@ class App extends Component {
     //Default
     let persons = null;
     //This checks every time there is a re-render.
+    //Maps every element in an array into something else. E.g. map will be on each array. This is also conditional this time.
+    //If you use a => in the click you can pass things in.
+    //The key needs to be something unique
+    //Event is from the Person class.
     if (this.state.showPersons) {
       persons = (
         <div>
-          <Person
-            name={this.state.persons[0].name}
-            age={this.state.persons[0].age}
-          />
-          <Person
-            name={this.state.persons[1].name}
-            age={this.state.persons[1].age}
-            click={this.switchNameHandler.bind(this, 'Maxxx')}
-            changed={this.nameChangedHandler}
-          />
-          <Person
-            name={this.state.persons[2].name}
-            age={this.state.persons[2].age}
-          />
-
+          {this.state.persons.map((person, index) => {
+            return <Person 
+            click={() => this.deletePersonHandler(index)}
+            name={person.name}
+            age={person.age} 
+            key={person.id} 
+            changed={(event) => this.nameChangedHandler(event, person.id)} />
+          })}
         </div>
       );
     }
