@@ -12,7 +12,8 @@ class App extends Component {
       { name: 'Manu', age: 29 },
       { name: 'Stephanie', age: 26 }
     ],
-    otherState: 'Some other data'
+    otherState: 'Some other data',
+    showPersons: false
   };
 
   switchNameHandler = (newName) => {
@@ -27,7 +28,7 @@ class App extends Component {
     })
   }
 
-//Always use => for handlers as this can refrence something else. 
+  //Always use => for handlers as this can refrence something else. 
   nameChangedHandler = (event) => {
     //console.log('Was clicked.');
     //DONT DO THIS: this.state.persons[0].name = "MaxiBoy";
@@ -39,6 +40,15 @@ class App extends Component {
       ]
     })
   }
+
+  //You have to assign ana arrow function to this property so it can be called. This means "this" is always this class.
+  togglePersonsHandler = () => {
+    //Flip flop
+    //This merges into the JSON.
+    const doesShow = this.state.showPersons;
+    this.setState({showPersons: !doesShow});
+  }
+
 
   //Arrow functions return a fucntion that gets exce. Use the bind syntax because it is better.
   render() {
@@ -57,21 +67,28 @@ class App extends Component {
         <p>This is really working.</p>
         <button
           style={style}
-          onClick={() => this.switchNameHandler('Maxiboi')}>Switch Name</button>
-        <Person
-          name={this.state.persons[0].name}
-          age={this.state.persons[0].age}
-        />
-        <Person
-          name={this.state.persons[1].name}
-          age={this.state.persons[1].age}
-          click={this.switchNameHandler.bind(this, 'Maxxx')}
-          changed={this.nameChangedHandler}
-        />
-        <Person
-          name={this.state.persons[2].name}
-          age={this.state.persons[2].age}
-        />
+          onClick={this.togglePersonsHandler}>Switch Name</button>
+        {
+        this.state.showPersons == true ?
+        <div>
+          <Person
+            name={this.state.persons[0].name}
+            age={this.state.persons[0].age}
+          />
+          <Person
+            name={this.state.persons[1].name}
+            age={this.state.persons[1].age}
+            click={this.switchNameHandler.bind(this, 'Maxxx')}
+            changed={this.nameChangedHandler}
+          />
+          <Person
+            name={this.state.persons[2].name}
+            age={this.state.persons[2].age}
+          /> 
+
+        </div>:  null
+        }
+
       </div>
     );
 
