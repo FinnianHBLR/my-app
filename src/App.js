@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
+import Radium, {StyleRoot} from 'radium';
 import Person from './Person/Person.js';
 
 //NOTE. You have to use className not class.
@@ -60,11 +61,16 @@ class App extends Component {
   //Arrow functions return a fucntion that gets exce. Use the bind syntax because it is better.
   render() {
     const style = {
-      backgroundColor: 'white',
+      backgroundColor: 'green',
+      color: 'white',
       font: 'inherit',
       border: '1px solid blue',
       padding: '8px',
-      cursor: 'pointer'
+      cursor: 'pointer',
+      ':hover': {
+        backgroundColor: 'lightgreen',
+        color: 'black'
+      }
     };
     //Default
     let persons = null;
@@ -86,22 +92,38 @@ class App extends Component {
           })}
         </div>
       );
+      style.backgroundColor = 'red';
+      style[':hover'] = {
+        backgroundColor: 'salmon',
+        color: 'black'
+      }
+    }
+
+    const classes = [];
+
+    if(this.state.persons.length <= 2) {
+      classes.push('red');
+    }
+    if(this.state.persons.length <= 1){
+      classes.push('bold');
     }
 
     return (
+      <StyleRoot>
       <div className="App">
         <h1>Hi, I'm React</h1>
-        <p>This is really working.</p>
+        <p className={classes.join(' ')}>This is really working.</p>
         <button
           style={style}
           onClick={this.togglePersonsHandler}>Toggle Names</button>
         {persons}
       </div>
+      </StyleRoot>
     );
 
     //Will be compiled to -- return React.createElement('div', {className: 'App'}, React.createElement('h1', null, 'testing.'));
 
   }
 }
-
-export default App;
+//Need to wrap the component in Radium.
+export default Radium(App);
