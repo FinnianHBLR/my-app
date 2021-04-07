@@ -1,7 +1,23 @@
 import React, { Component } from 'react';
 import './App.css';
-import Radium, {StyleRoot} from 'radium';
 import Person from './Person/Person.js';
+import styled from 'styled-components';
+
+//Regular CSS with styled components
+const StyledButton = styled.button`
+      background-Color: ${props => props.alt? 'red': 'green'};
+      color: white;
+      font: inherit;
+      border: 1px solid blue;
+      padding: 8px;
+      cursor: pointer;
+      
+      &:hover {
+        background-color: ${props => props.alt ? 'salmon' : 'lightgreen'};
+        color: black;
+      }
+`;
+
 
 //NOTE. You have to use className not class.
 //Onclick is with a capital C.
@@ -92,11 +108,11 @@ class App extends Component {
           })}
         </div>
       );
-      style.backgroundColor = 'red';
-      style[':hover'] = {
-        backgroundColor: 'salmon',
-        color: 'black'
-      }
+      // style.backgroundColor = 'red';
+      // style[':hover'] = {
+      //   backgroundColor: 'salmon',
+      //   color: 'black'
+      // }
     }
 
     const classes = [];
@@ -109,16 +125,14 @@ class App extends Component {
     }
 
     return (
-      <StyleRoot>
       <div className="App">
         <h1>Hi, I'm React</h1>
         <p className={classes.join(' ')}>This is really working.</p>
-        <button
-          style={style}
-          onClick={this.togglePersonsHandler}>Toggle Names</button>
+        <StyledButton
+          alt ={this.state.showPersons}
+          onClick={this.togglePersonsHandler}>Toggle Names</StyledButton>
         {persons}
       </div>
-      </StyleRoot>
     );
 
     //Will be compiled to -- return React.createElement('div', {className: 'App'}, React.createElement('h1', null, 'testing.'));
@@ -126,4 +140,4 @@ class App extends Component {
   }
 }
 //Need to wrap the component in Radium.
-export default Radium(App);
+export default App;
